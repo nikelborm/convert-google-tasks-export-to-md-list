@@ -34,10 +34,10 @@ interface Task {
 
 async function readAndOutputJsonFile() {
   try {
-    const filePath = '/home/nikel/Downloads/Takeout google tasks/Tasks/Tasks.json';
+    const filePath = './Tasks.json';
     const fileContent = await readFile(filePath, 'utf8');
     const parsedJson = JSON.parse(fileContent) as RootObject;
-    // console.log(util.inspect(parsedJson, { showHidden: false, depth: null }));
+    console.log(util.inspect(parsedJson, { showHidden: false, depth: null }));
     return {parsedJson, fileContent};
   } catch (error) {
     throw new Error('Error reading or parsing the JSON file:', { cause: error });
@@ -53,7 +53,7 @@ const { taskListsWithTasks, emptyTaskLists } = Object.groupBy(
   ({ items }) => !!items?.length
     ? 'taskListsWithTasks'
     : 'emptyTaskLists'
-) as {taskListsWithTasks: (TaskList & { items: Task[] })[], emptyTaskLists: Omit<TaskList, 'items'>[]};
+) as {taskListsWithTasks: (TaskList & { items: Task[] })[], emptyTaskLists: Omit<TaskList, 'items'>[]}; // need https://github.com/microsoft/TypeScript/pull/56805 to be merged to remove type assertion
 
 
 console.log('Task lists with tasks:', taskListsWithTasks.map(({ title }) => title).join(', '));
